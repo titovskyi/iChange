@@ -1,0 +1,99 @@
+.auth-wrapper {
+    background-color: #342e50;
+    padding: 0 30;
+}
+
+.auth__description {
+    font-size: 21;
+    color: #ffffff;
+    font-family: 'Ubuntu', 'Ubuntu-Regular';
+}
+
+.auth__description_highlight {
+    color: #2ef5ae;
+}
+
+.inputs {
+    margin: 20 0 23 0;
+}
+
+.auth-input {
+    background: #ffffff;
+    border-radius: 2;
+}
+
+.auth-input_phone {
+    margin-left: 4;
+}
+
+.active .auth-input__placeholder {
+    color: #2ef5ae;
+    font-family: 'Ubuntu', 'Ubuntu-Regular';
+}
+
+.auth-input__placeholder {
+    color: #747474;
+    font-size: 7;
+    top: 3;
+    left: 10;
+}
+
+.auth-input__text {
+    font-size: 17;
+    color: #3a3a3a;
+    left: 10;
+    top: 15;
+}
+
+.auth-input__text_phone {
+    top: 3;
+    left: -5;
+}
+
+.auth-input__icon {
+    font-size: 15;
+    color: #3a3a3a;
+    top: 18;
+    left: 92;
+}
+
+.auth-phone-prefix {
+}
+
+.auth-phone {
+}
+
+.auth__phone-placeholder {
+}
+
+.auth__sms {
+    margin-bottom: 29;
+}
+
+.auth__sms-description {
+    color: #9f9f9f;
+    font-size: 11;
+}
+
+.button-wrapper {
+    background: linear-gradient(
+        0deg,
+        rgba(168, 55, 88, 0.9) -23.4%,
+        rgba(255, 69, 91, 0.9) 41.92%,
+        rgba(255, 69, 91, 0.9) 41.94%,
+        rgba(255, 135, 97, 0.94) 93.41%,
+        #ffc2a7 155.32%
+    );
+    border-radius: 5;
+}
+
+.auth-button {
+    margin: 2;
+    border-radius: 5;
+    background: transparent;
+    padding: 10 0;
+    text-align: center;
+    font-size: 17;
+    font-family: 'Ubuntu', 'Ubuntu-Regular';
+    color: #ffffff;
+}

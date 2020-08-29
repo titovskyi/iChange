@@ -1,0 +1,29 @@
+.company-wrapper {
+    background-color: #342e50;
+}
+
+.header {
+    padding-top: 20;
+}
+
+.header-icon {
+    color: #C1BFBF;
+    font-size: 24;
+    margin: 0 20;
+}
+
+.header-text {
+    color: #ffffff;
+    font-family: "Ubuntu", "Ubuntu-Regular";
+    font-size: 20;
+}
+
+.list {
+    background-color: #342E50;
+}
+
+.list__item {
+    font-family: "Ubuntu", "Ubuntu-Regular";
+    font-size: 18;
+    padding: 15 20 15 20;
+}

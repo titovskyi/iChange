@@ -1,0 +1,77 @@
+/* Add mobile styles for the component here.  */
+.auth-wrapper {
+    background-color: #342e50;
+    padding: 0 30;
+}
+
+.confirm__header {
+    font-size: 21;
+    color: #ffffff;
+    font-family: 'Ubuntu', 'Ubuntu-Regular';
+}
+
+.confirm-description {
+    margin: 17 0;
+}
+
+.confirm-description__text {
+    color: #9f9f9f;
+    font-size: 15;
+}
+
+.confirm-input {
+    color: #fff;
+    font-size: 31;
+}
+
+.confirm-input__border-bottom {
+    width: 46;
+    height: 4;
+    background: #C4C4C4;
+}
+
+.sms-info {
+    color: #9f9f9f;
+    font-size: 12;
+    margin: 20 0;
+}
+
+.sms-info__text_link {
+    color: #2EF5AE;
+    text-decoration: underline;
+}
+
+.button-wrapper {
+    background: linear-gradient(
+            0deg,
+            rgba(168, 55, 88, 0.9) -23.4%,
+            rgba(255, 69, 91, 0.9) 41.92%,
+            rgba(255, 69, 91, 0.9) 41.94%,
+            rgba(255, 135, 97, 0.94) 93.41%,
+            #ffc2a7 155.32%
+    );
+    border-radius: 5;
+}
+
+.auth-button {
+    margin: 2;
+    border-radius: 5;
+    background: transparent;
+    padding: 10 0;
+    text-align: center;
+    font-size: 17;
+    font-family: 'Ubuntu', 'Ubuntu-Regular';
+    color: #ffffff;
+}
+
+
+
+
+/*.auth-text-field {*/
+/*    background-color: #969696;*/
+/*    border-radius: 10px;*/
+/*    font-size: 30px;*/
+/*    text-align: center;*/
+/*    color: #ffffff;*/
+/*    placeholder-color: #6d717c;*/
+/*}*/

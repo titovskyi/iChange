@@ -1,0 +1,17 @@
+<GridLayout rows="74, *" class="company-wrapper">
+    <FlexboxLayout row="0" alignItems="center" class="header">
+        <Label text="&#xf060;" class="fas header-icon" (tap)="onClose()"></Label>
+        <Label text="Выберите страну" class="header-text"></Label>
+    </FlexboxLayout>
+    <ScrollView row="1" class="list">
+        <StackLayout>
+            <Label
+                *ngFor="let country of countries"
+                [text]="country.full"
+                class="list__item"
+                (tap)="onCountryTap(country)"
+                [style.color]="currentCountry && country.full === currentCountry.full ? '#2ef5ae' : '#C1BFBF'"
+            ></Label>
+        </StackLayout>
+    </ScrollView>
+</GridLayout>

@@ -1,0 +1,111 @@
+<FlexboxLayout flexDirection="column" justifyContent="center" class="auth-wrapper">
+    <Label class="confirm__header" text="Код подтверждения" textAlignment="center"></Label>
+
+    <StackLayout class="confirm-description">
+        <Label class="confirm-description__text" text="Введите код подтверждения," textAlignment="center"></Label>
+        <Label class="confirm-description__text" text="отправленный на номер" textAlignment="center"></Label>
+        <Label class="confirm-description__text" [text]="phone" textAlignment="center"></Label>
+    </StackLayout>
+
+    <FlexboxLayout flexDirection="row" justifyContent="space-between" [formGroup]="codeForm">
+        <StackLayout>
+            <TextField
+                #firstFocus
+                [formControl]="firstNumber"
+                (focus)="onFocus(0)"
+                (blur)="onBlur(0)"
+                class="confirm-input"
+                borderBottomColor="transparent"
+                keyboardType="number"
+                maxLength="1"
+                returnPress="confirm"
+            ></TextField>
+            <Label
+                class="confirm-input__border-bottom"
+                [style.background]="activeInputs[0] ? '#2EF5AE' : '#C4C4C4'"
+            ></Label>
+        </StackLayout>
+        <StackLayout>
+            <TextField
+                #secondFocus
+                [formControl]="secondNumber"
+                (focus)="onFocus(1)"
+                (blur)="onBlur(1)"
+                class="confirm-input"
+                borderBottomColor="transparent"
+                keyboardType="number"
+                maxLength="1"
+                returnPress="confirm"
+            ></TextField>
+            <Label
+                class="confirm-input__border-bottom"
+                [style.background]="activeInputs[1] ? '#2EF5AE' : '#C4C4C4'"
+            ></Label>
+        </StackLayout>
+        <StackLayout>
+            <TextField
+                #thirdFocus
+                [formControl]="thirdNumber"
+                (focus)="onFocus(2)"
+                (blur)="onBlur(2)"
+                class="confirm-input"
+                borderBottomColor="transparent"
+                keyboardType="number"
+                maxLength="1"
+                returnPress="confirm"
+            ></TextField>
+            <Label
+                class="confirm-input__border-bottom"
+                [style.background]="activeInputs[2] ? '#2EF5AE' : '#C4C4C4'"
+            ></Label>
+        </StackLayout>
+        <StackLayout>
+            <TextField
+                #fourthFocus
+                [formControl]="fourthNumber"
+                (focus)="onFocus(3)"
+                (blur)="onBlur(3)"
+                class="confirm-input"
+                borderBottomColor="transparent"
+                keyboardType="number"
+                maxLength="1"
+                returnPress="confirm"
+            ></TextField>
+            <Label
+                class="confirm-input__border-bottom"
+                [style.background]="activeInputs[3] ? '#2EF5AE' : '#C4C4C4'"
+            ></Label>
+        </StackLayout>
+        <StackLayout>
+            <TextField
+                #fifthFocus
+                [formControl]="fifthNumber"
+                (focus)="onFocus(4)"
+                (blur)="onBlur(4)"
+                class="confirm-input"
+                borderBottomColor="transparent"
+                keyboardType="number"
+                maxLength="1"
+                returnPress="confirm"
+            ></TextField>
+            <Label
+                class="confirm-input__border-bottom"
+                [style.background]="activeInputs[4] ? '#2EF5AE' : '#C4C4C4'"
+            ></Label>
+        </StackLayout>
+    </FlexboxLayout>
+
+    <StackLayout class="sms-info">
+        <Label class="sms-info__text" text="Для повторной отправки" textAlignment="center"></Label>
+        <Label class="sms-info__text" text="SMS-сообщение с кодом активации" textAlignment="center"></Label>
+        <Label class="sms-info__text" textAlignment="center" (tap)="onGetCodeTap()">
+            <Span text="нажмите на "></Span>
+            <Span class="sms-info__text_link" text="данную ссылку"></Span>
+        </Label>
+    </StackLayout>
+
+    <GridLayout rows="47" columns="*, 156, *" textAlignment="center">
+        <Label row="0" column="1" class="button-wrapper"></Label>
+        <Label row="0" column="1" class="auth-button" text="Отправить" [style.background]="formValid() ? 'transparent' : '#342E50'" (tap)="confirm()"></Label>
+    </GridLayout>
+</FlexboxLayout>

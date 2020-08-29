@@ -1,0 +1,57 @@
+<FlexboxLayout flexDirection="column" justifyContent="center" class="auth-wrapper">
+    <Label class="auth__description" text="Зарегестрируйтесь" textAlignment="center"></Label>
+    <Label class="auth__description" textAlignment="center">
+        <Span text="в "></Span>
+        <Span text="i CHANGE " class="auth__description_highlight"></Span>
+        <Span text=", исполузуя номер"></Span>
+    </Label>
+    <Label class="auth__description" text="телефона" textAlignment="center"></Label>
+
+    <GridLayout rows="45" columns="107, *" class="inputs">
+        <AbsoluteLayout row="0" col="0" class="auth-input auth-phone-prefix" (tap)="onChoseCountry()">
+            <Label text="Код страны" class="auth-input__placeholder"></Label>
+            <Label [text]="countryPrefix.value" class="auth-input__text auth-phone-prefix__text"></Label>
+            <Label text="&#xf0d7;" class="fas auth-input__icon"></Label>
+        </AbsoluteLayout>
+
+        <AbsoluteLayout row="0" col="1" class="auth-input auth-input_phone">
+            <Label
+                text="Ваш номер телефона"
+                class="auth-input__placeholder"
+                [style.color]="phoneInput.valid ? '#747474' : '#2EF5AE'"
+            ></Label>
+            <TextField
+                [formControl]="phoneInput"
+                width="100%"
+                class="auth-input__text auth-input__text_phone auth-phone"
+                borderBottomColor="transparent"
+                maxLength="9"
+                hint=""
+                keyboardType="number"
+            ></TextField>
+        </AbsoluteLayout>
+    </GridLayout>
+
+    <StackLayout class="auth__sms">
+        <Label class="auth__sms-description" text="В течении 10 минут на ваш номер" textAlignment="center"></Label>
+        <Label
+            class="auth__sms-description"
+            text="телефона будет отправленно SMS-сообщение с"
+            textAlignment="center"
+        ></Label>
+        <Label class="auth__sms-description" text="кодом подтверждения активации" textAlignment="center"></Label>
+    </StackLayout>
+
+    <GridLayout rows="47" columns="*, 156, *" textAlignment="center">
+        <Label row="0" column="1" class="button-wrapper"></Label>
+        <Label
+            row="0"
+            column="1"
+            class="auth-button"
+            text="Отправить"
+            [style.background]="phoneInput.valid ? 'transparent' : '#342E50'"
+            (tap)="login()"
+        ></Label>
+    </GridLayout>
+
+</FlexboxLayout>
