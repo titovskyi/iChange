@@ -4,6 +4,7 @@ import { AuthStateInterface, initialAuthState } from '~/app/store/state/auth.sta
 export const authReducers = (state = initialAuthState, action: AuthActions): AuthStateInterface => {
     switch (action.type) {
         case AuthActionTypes.LOGIN_SUCCESS: {
+            console.log('here')
             return {
                 ...state,
                 confirmCode: action.payload.code,

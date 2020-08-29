@@ -8,11 +8,13 @@ import { map } from 'rxjs/internal/operators';
 import { UserFactory } from '~/app/models/user/user.factory';
 import { Router } from '@angular/router';
 
+import { Config } from '../assets/config';
+
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    public static readonly DOMAIN = 'http://192.168.0.102:3000';
+    public static readonly DOMAIN = Config.api;
 
     public static readonly UPLOADS_URL = `${AuthService.DOMAIN}/upload`;
 
@@ -39,7 +41,6 @@ export class AuthService {
     // #############################################
 
     public getToken() {
-
         return getString('myChangeAccessToken');
     }
 

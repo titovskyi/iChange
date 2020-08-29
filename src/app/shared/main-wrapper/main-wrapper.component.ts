@@ -1,4 +1,5 @@
-import {Component, OnInit} from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Page } from 'tns-core-modules/ui/page';
 
 @Component({
     selector: 'ns-main-wrapper',
@@ -6,10 +7,24 @@ import {Component, OnInit} from "@angular/core";
     styleUrls: ['./main-wrapper.component.scss']
 })
 export class MainWrapperComponent implements OnInit {
-    title: string = 'Hello Auth';
+    public isSelected: string = 'createPage';
 
+    // #############################################
+
+    constructor(private page: Page, private cd: ChangeDetectorRef) {}
+
+    // #############################################
 
     ngOnInit(): void {
-        console.log(this.title);
+        this.page.actionBarHidden = true;
     }
+
+    // #############################################
+
+    public onBottomSheetTap(isSelected: string): void {
+        this.isSelected = isSelected;
+        this.cd.detectChanges();
+    }
+
+    // #############################################
 }

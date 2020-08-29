@@ -22,7 +22,7 @@ export class LogIn implements Action {
 
 export class LogInSuccess implements Action {
     public readonly type = AuthActionTypes.LOGIN_SUCCESS;
-    constructor(public payload: {phone: string, code: number}) {}
+    constructor(public payload: { phone: string; code: number }) {}
 }
 
 export class LoginFailure implements Action {

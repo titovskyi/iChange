@@ -28,6 +28,7 @@
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
+    "@angular/cli": "^10.0.8",
     "@angular/compiler-cli": "~8.2.0",
     "@nativescript/schematics": "^10.0.1",
     "@ngrx/core": "^1.2.0",
@@ -38,6 +39,7 @@
     "@ngtools/webpack": "~8.2.0",
     "nativescript-dev-webpack": "~1.4.0",
     "node-sass": "^4.14.1",
+    "tns-platform-declarations": "^6.5.15",
     "typescript": "~3.5.3"
   },
   "gitHead": "fa98f785df3fba482e5e2a0c76f4be1fa6dc7a14",

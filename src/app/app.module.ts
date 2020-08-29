@@ -8,8 +8,7 @@ import { NativeScriptFormsModule } from 'nativescript-angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ItemsComponent } from './item/items.component';
-import { ItemDetailComponent } from './item/item-detail.component';
+
 import { MainWrapperComponent } from '~/app/shared/main-wrapper/main-wrapper.component';
 import { CountryComponent } from '~/app/modals/country/country.component';
 import { StoreModule } from '@ngrx/store';
@@ -20,6 +19,11 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { LoginComponent } from '~/app/screens/login/login.component';
 import { ConfirmComponent } from '~/app/screens/confirm/confirm.component';
 import { JwtInterceptor } from '~/app/helpers/jwt.interceptor';
+import { HomeComponent } from './screens/home/home.component';
+import { SearchComponent } from './screens/search/search.component';
+import { ChatComponent } from './screens/chat/chat.component';
+import { ProfileComponent } from './screens/profile/profile.component';
+import { CreatePostComponent } from './screens/create-post/create-post.component';
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -40,8 +44,11 @@ import { JwtInterceptor } from '~/app/helpers/jwt.interceptor';
         ConfirmComponent,
         MainWrapperComponent,
         CountryComponent,
-        ItemsComponent,
-        ItemDetailComponent
+        HomeComponent,
+        SearchComponent,
+        ChatComponent,
+        ProfileComponent,
+        CreatePostComponent
     ],
     providers: [
         {
