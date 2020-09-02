@@ -7,7 +7,7 @@ import { Page } from 'tns-core-modules/ui/page';
     styleUrls: ['./main-wrapper.component.scss']
 })
 export class MainWrapperComponent implements OnInit {
-    public isSelected: string = 'createPage';
+    public isSelected: string = 'createPost';
 
     // #############################################
 

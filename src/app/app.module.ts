@@ -25,6 +25,16 @@ import { ChatComponent } from './screens/chat/chat.component';
 import { ProfileComponent } from './screens/profile/profile.component';
 import { CreatePostComponent } from './screens/create-post/create-post.component';
 
+import { TNSFrescoModule } from 'nativescript-fresco/angular';
+import * as frescoModule from 'nativescript-fresco';
+import * as applicationModule from 'tns-core-modules/application';
+import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular";
+
+if (applicationModule.android) {
+    applicationModule.on('launch', () => {
+        frescoModule.initialize();
+    });
+}
 @NgModule({
     bootstrap: [AppComponent],
     imports: [
@@ -36,7 +46,9 @@ import { CreatePostComponent } from './screens/create-post/create-post.component
         ReactiveFormsModule,
         StoreModule.forRoot(appReducers),
         EffectsModule.forRoot([AuthEffects]),
-        StoreRouterConnectingModule.forRoot({ stateKey: 'router' })
+        StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
+        TNSFrescoModule,
+        NativeScriptUIListViewModule
     ],
     declarations: [
         AppComponent,
