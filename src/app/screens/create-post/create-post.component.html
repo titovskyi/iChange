@@ -1,91 +1,75 @@
-<!--<GridLayout tkExampleTitle tkToggleNavButton>-->
-<!--    <RadListView [items]="imageList">-->
-<!--        <ng-template tkListItemTemplate let-item="item">-->
-<!--            <StackLayout orientation="vertical">-->
-<!--                <<Image width="94" height="94" [src]="item.fileUri"></Image>-->
-<!--            </StackLayout>-->
-<!--        </ng-template>-->
-<!--    </RadListView>-->
-<!--</GridLayout>-->
-
-<!--<GridLayout rows="100 *">-->
-<!--    <Button row="0" text="ReadFile" (tap)="onTap()"></Button>-->
-<!--    <RadListView id="listID" row="1" [items]="imageList" multipleSelection="true" selectionBehavior="Press">-->
-<!--        <ng-template tkListItemTemplate let-item="item">-->
-<!--            <GridLayout class="gridLayoutStyle" rows="auto" columns="*">-->
-<!--                                <Image decodeWidth="94" decodeHeight="94" [src]="item.fileUri" loadMode="async"></Image>-->
-<!--&lt;!&ndash;                <FrescoDrawee&ndash;&gt;-->
-<!--&lt;!&ndash;                        row="0"&ndash;&gt;-->
-<!--&lt;!&ndash;                        col="0"&ndash;&gt;-->
-<!--&lt;!&ndash;                    [imageUri]="item.path"&ndash;&gt;-->
-<!--&lt;!&ndash;                    aspectRatio="1"&ndash;&gt;-->
-<!--&lt;!&ndash;                    failureImageUri="~/app/assets/fail-image.jpg"&ndash;&gt;-->
-<!--&lt;!&ndash;                    verticalAlignment="top"&ndash;&gt;-->
-<!--&lt;!&ndash;                ></FrescoDrawee>&ndash;&gt;-->
-<!--&lt;!&ndash;                <Label row="1" [text]="item.text"></Label>&ndash;&gt;-->
-<!--            </GridLayout>-->
-<!--        </ng-template>-->
-<!--        <ListViewGridLayout tkListViewLayout scrollDirection="Vertical" spanCount="4"></ListViewGridLayout>-->
-<!--    </RadListView>-->
-<!--</GridLayout>-->
-
-<!--<StackLayout heigh="100%">-->
-<!--    <Button row="0" text="ReadFile" (tap)="onTap()"></Button>-->
-<!--    <FlexboxLayout class="image-wrapper">-->
-<!--            <Image *ngFor="let img of imageList" decodeWidth="94" decodeHeight="94" class="post-image" [src]="img.fileUri" ></Image>-->
-<!--&lt;!&ndash;        <FrescoDrawee&ndash;&gt;-->
-<!--&lt;!&ndash;                *ngFor="let img of imageList"&ndash;&gt;-->
-<!--&lt;!&ndash;                class="post-image"&ndash;&gt;-->
-<!--&lt;!&ndash;                [imageUri]="img.fileUri"&ndash;&gt;-->
-<!--&lt;!&ndash;                failureImageUri="~/app/assets/fail-image.jpg"&ndash;&gt;-->
-<!--&lt;!&ndash;                aspectRatio="1"&ndash;&gt;-->
-<!--&lt;!&ndash;                verticalAlignment="top"&ndash;&gt;-->
-<!--&lt;!&ndash;        ></FrescoDrawee>&ndash;&gt;-->
-<!--    </FlexboxLayout>-->
-<!--</StackLayout>-->
-
-    <StackLayout height="100%">
-        <ListView height="100%" [items]="imageList">
-            <Button text="ReadFile" (tap)="onTap()"></Button>
-
-            <ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
-                <StackLayout >
-                    <Image decodeWidth="94" decodeHeight="94" class="post-image" [src]="item.fileUri" loadMode="async"></Image>
+<GridLayout rows="83, auto, *" columns="*" class="wrapper">
+    <FlexboxLayout row="0" class="action-bar">
+        <FlexboxLayout alignItems="center">
+            <Label class="mdi action-bar__icon" [text]="'mdi-close' | fonticon" (tap)="goBack()"></Label>
+            <Label class="action-bar__title" text="Галерея" (tap)="goNext()"></Label>
+        </FlexboxLayout>
+        <Label
+                (tap)="goNext"
+            class="mdi action-bar__icon"
+            [text]="'mdi-done' | fonticon"
+            [ngClass]="{
+                'action-bar__icon_disabled': !postImages.length,
+                'action-bar__icon_enabled': postImages.length
+            }"
+        ></Label>
+    </FlexboxLayout>
+    <StackLayout row="1" class="check-block" *ngIf="postImages.length">
+        <WrapLayout class="check-block__text">
+            <Label text="Выбрано"></Label>
+            <Label class="check-block__text_count" [text]="postImages.length"></Label>
+        </WrapLayout>
+        <StackLayout class="check-block__images" orientation="horizontal">
+            <AbsoluteLayout *ngFor="let image of postImages" (tap)="removeImageFromPost(image)">
+                <FrescoDrawee
+                    class="check-block__image"
+                    decodeWidth="100"
+                    decodeHeight="100"
+                    [imageUri]="image.fileUri"
+                    failureImageUri="~/app/assets/fail-image.jpg"
+                    aspectRatio="1"
+                    verticalAlignment="center"
+                >
+                </FrescoDrawee>
+                <Label class="mdi check-block__close-icon" [text]="'mdi-close' | fonticon" top="20" left="20"></Label>
+            </AbsoluteLayout>
+        </StackLayout>
+    </StackLayout>
+    <StackLayout row="2" tkExampleTitle tkToggleNavButton>
+        <RadListView
+            [items]="images"
+            loadOnDemandMode="Auto"
+            loadOnDemandBufferSize="12"
+            (loadMoreDataRequested)="onLoadMoreItemsRequested($event)"
+        >
+            <ListViewGridLayout tkListViewLayout scrollDirection="Vertical" spanCount="3"></ListViewGridLayout>
+            <ng-template tkListItemTemplate let-item="item">
+                <StackLayout orientation="vertical">
+                    <FrescoDrawee
+                        decodeWidth="100"
+                        decodeHeight="100"
+                        class="gallery-image"
+                        [imageUri]="item.fileUri"
+                        failureImageUri="~/app/assets/fail-image.jpg"
+                        aspectRatio="1"
+                        verticalAlignment="center"
+                        (tap)="addImageToPost(item)"
+                        [visibility]="!checkIfChosen(item) ? 'visible' : 'collapse'"
+                    ></FrescoDrawee>
+                    <FrescoDrawee
+                        decodeWidth="100"
+                        decodeHeight="100"
+                        class="gallery-image"
+                        [imageUri]="item.fileUri"
+                        failureImageUri="~/app/assets/fail-image.jpg"
+                        aspectRatio="1"
+                        verticalAlignment="center"
+                        roundAsCircle="true"
+                        (tap)="addImageToPost(item)"
+                        [visibility]="checkIfChosen(item) ? 'visible' : 'collapse'"
+                    ></FrescoDrawee>
                 </StackLayout>
             </ng-template>
-        </ListView>
+        </RadListView>
     </StackLayout>
-
-<!--    <ListView [items]="imageList" height="100%">-->
-<!--        <Button text="ReadFile" (tap)="onTap()"></Button>-->
-<!--        <ng-template let-item="item">-->
-
-<!--                <Image decodeWidth="94" decodeHeight="94" class="post-image" [src]="item.fileUri" loadMode="async"></Image>-->
-<!--        </ng-template>-->
-
-<!--    </ListView>-->
-<!--    <RadListView id="listID" row="0" [items]="imageList" multipleSelection="true" selectionBehavior="Press">-->
-<!--        <ListViewGridLayout tkListViewLayout scrollDirection="vertical" itemHeight="100 0" itemWidth="100"  spanCount="3">-->
-<!--        </ListViewGridLayout>-->
-<!--        <ng-template tkListItemTemplate let-item="item" let-index="index">-->
-<!--            <StackLayout rows="auto" height="100%" width="100%">-->
-<!--                <StackLayout width="100" height="auto">-->
-<!--                    <StackLayout class="card-other m-5">-->
-<!--                        <Image decodeWidth="94" decodeHeight="94" class="post-image" [src]="item.fileUri" loadMode="async"></Image>-->
-<!--                    </StackLayout>-->
-<!--                    <Label [text]="item.title" class="text-center h4"></Label>-->
-<!--                </StackLayout>-->
-<!--            </StackLayout>-->
-
-<!--        </ng-template>-->
-<!--    </RadListView>-->
-
-<!--&lt;!&ndash;<ng-template *ngFor="let img of folderEntities">&ndash;&gt;-->
-<!--    <StackLayout >-->
-<!--        <Label text="'asdasdasd'"></Label>-->
-<!--        <Image *ngFor="let img of folderEntities" [src]="img.path"></Image>-->
-<!--&lt;!&ndash;        <Image src="~/app/assets/fail-image.jpg"></Image>&ndash;&gt;-->
-<!--&lt;!&ndash;        <Image src="~/app/assets/fail-image.jpg"></Image>&ndash;&gt;-->
-<!--&lt;!&ndash;        <Image src="~/app/assets/fail-image.jpg"></Image>&ndash;&gt;-->
-<!--    </StackLayout>-->
-<!--&lt;!&ndash;</ng-template>&ndash;&gt;-->
+</GridLayout>

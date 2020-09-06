@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
 import { setString, remove } from 'tns-core-modules/application-settings/application-settings';
@@ -21,12 +20,13 @@ import {
     CheckToken
 } from '~/app/store/actions/auth.actions';
 import { User } from '~/app/models/user/user.model';
+import { RouterExtensions } from 'nativescript-angular/router';
 
 @Injectable({ providedIn: 'root' })
 export class AuthEffects {
     // #############################################
 
-    constructor(private actions: Actions, private authService: AuthService, private router: Router) {}
+    constructor(private actions: Actions, private authService: AuthService, private router: RouterExtensions) {}
 
     // #############################################
 
@@ -36,7 +36,7 @@ export class AuthEffects {
         map((action: LogIn) => action.payload),
         switchMap((phone: string) => {
             return this.authService.login(phone).pipe(
-                map((code: number) => new LogInSuccess({phone, code})),
+                map((code: number) => new LogInSuccess({ phone, code })),
                 catchError((error) => of(new LoginFailure(error)))
             );
         })
@@ -47,7 +47,22 @@ export class AuthEffects {
         ofType(AuthActionTypes.LOGIN_SUCCESS),
         map((action: LogInSuccess) => action.payload),
         tap((data) => {
-            this.router.navigate(['confirm', { phone: data.phone }]);
+            this.router.navigate(['confirm', { phone: data.phone }], { clearHistory: true });
+        })
+    );
+
+    @Effect({ dispatch: false })
+    LogInFailure: Observable<any> = this.actions.pipe(
+        ofType(AuthActionTypes.LOGIN_FAILURE),
+        map((action: LoginFailure) => action.payload)
+    );
+
+    @Effect({ dispatch: false })
+    Logout: Observable<any> = this.actions.pipe(
+        ofType(AuthActionTypes.LOGOUT),
+        tap(() => {
+            remove('myChangeAccessToken');
+            this.router.navigate(['login']);
         })
     );
 
@@ -69,12 +84,15 @@ export class AuthEffects {
         map((action: ConfirmSuccess) => action.payload),
         tap((user: User) => {
             setString('myChangeAccessToken', user.authToken);
-            this.router.navigate(['main']);
+            this.router.navigate(['main'], { clearHistory: true });
         })
     );
 
     @Effect({ dispatch: false })
-    ConfirmFailure: Observable<any> = this.actions.pipe(ofType(AuthActionTypes.CONFIRM_FAILURE));
+    ConfirmFailure: Observable<any> = this.actions.pipe(
+        ofType(AuthActionTypes.CONFIRM_FAILURE),
+        map((action: ConfirmFailure) => action.payload)
+    );
 
     @Effect()
     CheckToken: Observable<CheckTokenSuccess | CheckTokenFailure> = this.actions.pipe(

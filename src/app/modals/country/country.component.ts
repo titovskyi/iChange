@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalDialogParams } from 'nativescript-angular/modal-dialog';
-import { HttpClient } from '@angular/common/http';
-
 
 const countriesJson = require('../../assets/countries').countriesJSON;
 
 @Component({
     selector: 'ns-country',
     templateUrl: './country.component.html',
-    styleUrls: ['./country.component.css']
+    styleUrls: ['./country.component.scss']
 })
 export class CountryComponent implements OnInit {
     public currentCountry: { country: string; short: string; full: string; prefix: string } = null;
@@ -27,11 +25,11 @@ export class CountryComponent implements OnInit {
 
     // #############################################
 
-    public onCountryTap(country) {
+    public onCountryTap(country): void {
         this.params.closeCallback(country);
     }
 
-    public onClose() {
+    public onClose(): void {
         this.params.closeCallback(null);
     }
 

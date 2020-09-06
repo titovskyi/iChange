@@ -1,82 +1,61 @@
-<GridLayout rows="auto, *, 50">
-    <ScrollView row="1" [visibility]="isSelected === 'home' ? 'visible' : 'collapse'">
+<GridLayout rows="auto, *, 63">
+    <ScrollView row="1" *ngIf="isSelected === 'home'" [visibility]="isSelected === 'home' ? 'visible' : 'collapse'">
         <ns-home></ns-home>
     </ScrollView>
 
-    <ScrollView row="1" [visibility]="isSelected === 'search' ? 'visible' : 'collapse'">
+    <ScrollView row="1" *ngIf="isSelected === 'search'" [visibility]="isSelected === 'search' ? 'visible' : 'collapse'">
         <ns-search></ns-search>
     </ScrollView>
 
-    <ScrollView row="1" [visibility]="isSelected === 'createPost' ? 'visible' : 'collapse'">
-        <ns-create-post></ns-create-post>
-    </ScrollView>
+    <StackLayout row="1" *ngIf="isSelected === 'createPost'" [visibility]="isSelected === 'createPost' ? 'visible' : 'collapse'">
+        <ns-create-post (showHomePage)="showHomePage()"></ns-create-post>
+    </StackLayout>
 
-    <ScrollView row="1" [visibility]="isSelected === 'chat' ? 'visible' : 'collapse'">
+    <StackLayout row="1" *ngIf="isSelected === 'chat'" [visibility]="isSelected === 'chat' ? 'visible' : 'collapse'">
         <ns-chat></ns-chat>
-    </ScrollView>
+    </StackLayout>
 
-    <ScrollView row="1" [visibility]="isSelected === 'profile' ? 'visible' : 'collapse'">
+    <ScrollView row="1" *ngIf="isSelected === 'profile'" [visibility]="isSelected === 'profile' ? 'visible' : 'collapse'">
         <ns-profile></ns-profile>
     </ScrollView>
 
     <GridLayout row="2" columns="*,*,*,*,*" class="bottom-nav">
-        <Label
-            col="0"
-            text="&#xf015;"
-            class="fas nav-icon"
-            style="font-size: 24;"
-            (tap)="onBottomSheetTap('home')"
-            [ngClass]="{
-                tabselected: isSelected == 'home' ? true : false,
-                tabnotselected: isSelected != 'home' ? true : false
-            }"
-        ></Label>
-        <Label
-            col="1"
-            text="&#xf002;"
-            class="fas nav-icon"
-            style="font-size: 24;"
-            (tap)="onBottomSheetTap('search')"
-            [ngClass]="{
-                tabselected: isSelected == 'search' ? true : false,
-                tabnotselected: isSelected != 'search' ? true : false
-            }"
-        ></Label>
-        <Label
-            col="2"
-            text="&#xf067;"
-            class="fas nav-icon"
-            style="font-size: 24;"
-            (tap)="onBottomSheetTap('createPost')"
-            [ngClass]="{
-                tabselected: isSelected == 'createPost' ? true : false,
-                tabnotselected: isSelected != 'createPost' ? true : false
-            }"
-        ></Label>
-        <AbsoluteLayout
-            col="3"
-            textAlignment="center"
-            verticalAlignment="center"
-            (tap)="onBottomSheetTap('chat')"
-            [ngClass]="{
-                tabselected: isSelected == 'chat' ? true : false,
-                tabnotselected: isSelected != 'chat' ? true : false
-            }"
-        >
-            <Label text="&#xf27a;" class="far nav-icon" style="font-size: 24;"></Label>
-            <Label class="connection-badge"></Label>
-            <Label class="chat-badge"></Label>
+        <Label col="0" class="mdi nav-icon" [text]="'mdi-home' | fonticon" (tap)="onBottomSheetTap('home')"></Label>
+        <Label col="1" class="mdi nav-icon" [text]="'mdi-search' | fonticon" (tap)="onBottomSheetTap('search')"></Label>
+        <AbsoluteLayout col="2" (tap)="onBottomSheetTap('createPost')">
+            <Label
+                top="12"
+                left="6"
+                class="mdi nav-icon nav-icon_active"
+                [text]="'mdi-add' | fonticon"
+                color="#F1805E"
+            ></Label>
+            <Label
+                top="11"
+                left="5"
+                class="mdi nav-icon nav-icon_active"
+                [text]="'mdi-add' | fonticon"
+                color="#E94A58"
+            ></Label>
+            <Label
+                top="10"
+                left="4"
+                class="mdi nav-icon nav-icon_active"
+                color="#B92F4E"
+                [text]="'mdi-add' | fonticon"
+            ></Label>
         </AbsoluteLayout>
         <Label
+            col="3"
+            class="mdi nav-icon"
+            [text]="'mdi-chat-bubble-outline' | fonticon"
+            (tap)="onBottomSheetTap('chat')"
+        ></Label>
+        <Label
             col="4"
-            text="&#xf007;"
-            class="fas nav-icon"
-            style="font-size: 24;"
+            class="mdi nav-icon"
+            [text]="'mdi-person' | fonticon"
             (tap)="onBottomSheetTap('profile')"
-            [ngClass]="{
-                tabselected: isSelected == 'profile' ? true : false,
-                tabnotselected: isSelected != 'profile' ? true : false
-            }"
         ></Label>
     </GridLayout>
 </GridLayout>

@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
 import { User } from '../models/user/user.model';
 import { map } from 'rxjs/internal/operators';
 import { UserFactory } from '~/app/models/user/user.factory';
-import { Router } from '@angular/router';
 
 import { Config } from '../assets/config';
+import { RouterExtensions } from 'nativescript-angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +26,7 @@ export class AuthService {
 
     // #############################################
 
-    constructor(private http: HttpClient, private userFactory: UserFactory, private router: Router) {}
+    constructor(private http: HttpClient, private userFactory: UserFactory, private router: RouterExtensions) {}
 
     // #############################################
 
@@ -54,7 +54,7 @@ export class AuthService {
 
     public logout() {
         remove('myChangeAccessToken');
-        this.router.navigate(['login']);
+        this.router.navigate(['login'], { clearHistory: true });
     }
 
     // public confirmUser(phone: string, confirmCode: number): Observable<{ token: string }> {

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -6,15 +6,18 @@ import { Page } from 'tns-core-modules/ui/page';
 import { setString, getString } from 'tns-core-modules/application-settings/application-settings';
 import { AppStateInterface } from '~/app/store/state/app.state';
 import { select, Store } from '@ngrx/store';
-import { Confirm } from '~/app/store/actions/auth.actions';
+import {ClearError, Confirm} from '~/app/store/actions/auth.actions';
 import { selectAuthCode } from '~/app/store/selectors/user.selector';
+import {selectAuthError} from "~/app/store/selectors/errors.selector";
+import {ModalDialogOptions, ModalDialogService} from "nativescript-angular/modal-dialog";
+import {ErrorComponent} from "~/app/modals/error/error.component";
+import {Subscription} from "rxjs";
 
-// import { UserService } from '../../../models/user/user.service';
 
 @Component({
     selector: 'ns-confirm',
     templateUrl: './confirm.component.html',
-    styleUrls: ['./confirm.component.css']
+    styleUrls: ['./confirm.component.scss']
 })
 export class ConfirmComponent implements OnInit {
     public phone: string = null;
@@ -36,6 +39,10 @@ export class ConfirmComponent implements OnInit {
 
     // #############################################
 
+    private subscription: Subscription;
+
+    // #############################################
+
     @ViewChild('firstFocus', { static: false }) public firstFocus: ElementRef;
     @ViewChild('secondFocus', { static: false }) public secondFocus: ElementRef;
     @ViewChild('thirdFocus', { static: false }) public thirdFocus: ElementRef;
@@ -45,9 +52,10 @@ export class ConfirmComponent implements OnInit {
     // #############################################
 
     constructor(
+        private modal: ModalDialogService,
+        private viewContainerRef: ViewContainerRef,
         private page: Page,
         private activatedRoute: ActivatedRoute,
-        // private userService: UserService,
         private router: Router,
         private store: Store<AppStateInterface>
     ) {
@@ -57,6 +65,19 @@ export class ConfirmComponent implements OnInit {
         this.store.pipe(select(selectAuthCode)).subscribe((res) => {
             this.confirmCode.setValue(res);
         });
+
+        this.subscription = this.store.pipe(select(selectAuthError)).subscribe((response) => {
+            console.log(response, 'response');
+            if(response) {
+                const options: ModalDialogOptions = {
+                    context: response,
+                    viewContainerRef: this.viewContainerRef,
+                    fullscreen: true
+                };
+
+                this.modal.showModal(ErrorComponent, options)
+            }
+        })
     }
 
     // #############################################
@@ -78,6 +99,10 @@ export class ConfirmComponent implements OnInit {
         }, 0);
 
         this.inputsSubscription();
+    }
+
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
     }
 
     // #############################################

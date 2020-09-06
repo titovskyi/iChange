@@ -12,7 +12,7 @@ import { AppComponent } from './app.component';
 import { MainWrapperComponent } from '~/app/shared/main-wrapper/main-wrapper.component';
 import { CountryComponent } from '~/app/modals/country/country.component';
 import { StoreModule } from '@ngrx/store';
-import { appReducers } from '~/app/store/reducers/app.resucers';
+import { appReducers } from '~/app/store/reducers/app.reducers';
 import { AuthEffects } from '~/app/store/effects/auth.effects';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
@@ -29,6 +29,9 @@ import { TNSFrescoModule } from 'nativescript-fresco/angular';
 import * as frescoModule from 'nativescript-fresco';
 import * as applicationModule from 'tns-core-modules/application';
 import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular";
+import {TNSFontIconModule} from "nativescript-ngx-fonticon";
+import { ErrorComponent } from './modals/error/error.component';
+
 
 if (applicationModule.android) {
     applicationModule.on('launch', () => {
@@ -48,7 +51,8 @@ if (applicationModule.android) {
         EffectsModule.forRoot([AuthEffects]),
         StoreRouterConnectingModule.forRoot({ stateKey: 'router' }),
         TNSFrescoModule,
-        NativeScriptUIListViewModule
+        NativeScriptUIListViewModule,
+        TNSFontIconModule.forRoot({ mdi: require("~/app/assets/css/material-design-icons.css") })
     ],
     declarations: [
         AppComponent,
@@ -56,6 +60,7 @@ if (applicationModule.android) {
         ConfirmComponent,
         MainWrapperComponent,
         CountryComponent,
+        ErrorComponent,
         HomeComponent,
         SearchComponent,
         ChatComponent,
@@ -69,7 +74,7 @@ if (applicationModule.android) {
             multi: true
         }
     ],
-    entryComponents: [CountryComponent],
+    entryComponents: [CountryComponent, ErrorComponent],
     schemas: [NO_ERRORS_SCHEMA]
 })
 /*

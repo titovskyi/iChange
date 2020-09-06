@@ -1,0 +1,38 @@
+.wrapper {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #342e50;
+}
+
+.error-text {
+    font-family: 'Ubuntu', 'Ubuntu-Regular';
+    font-weight: normal;
+    font-size: 20;
+    line-height: 125.9%;
+    color: #ffffff;
+}
+
+.error-image {
+    width: 140;
+    height: 200;
+    margin: 40 0;
+}
+
+.error-button {
+    background: linear-gradient(
+        0deg,
+        rgba(168, 55, 88, 0.9) -23.4%,
+        rgba(255, 69, 91, 0.9) 41.92%,
+        rgba(255, 69, 91, 0.9) 41.94%,
+        rgba(255, 135, 97, 0.94) 93.41%,
+        #ffc2a7 155.32%
+    );
+    border-radius: 5;
+    padding: 10 15;
+    margin-top: 40;
+    text-align: center;
+    font-size: 17;
+    font-family: 'Ubuntu', 'Ubuntu-Regular';
+    color: #ffffff;
+}

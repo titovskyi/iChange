@@ -1,10 +1,9 @@
-import { AuthActions, AuthActionTypes } from '~/app/store/actions/auth.actions';
-import { AuthStateInterface, initialAuthState } from '~/app/store/state/auth.state';
+import {AuthActions, AuthActionTypes} from '~/app/store/actions/auth.actions';
+import {AuthStateInterface, initialAuthState} from '~/app/store/state/auth.state';
 
 export const authReducers = (state = initialAuthState, action: AuthActions): AuthStateInterface => {
     switch (action.type) {
         case AuthActionTypes.LOGIN_SUCCESS: {
-            console.log('here')
             return {
                 ...state,
                 confirmCode: action.payload.code,
@@ -14,8 +13,8 @@ export const authReducers = (state = initialAuthState, action: AuthActions): Aut
         case AuthActionTypes.LOGIN_FAILURE: {
             return {
                 ...state,
-                errorMessage: action.payload
-            };
+                errorMessage: action.payload.error
+            }
         }
         case AuthActionTypes.CONFIRM_SUCCESS: {
             return {
@@ -27,8 +26,20 @@ export const authReducers = (state = initialAuthState, action: AuthActions): Aut
         case AuthActionTypes.CONFIRM_FAILURE: {
             return {
                 ...state,
-                errorMessage: action.payload
+                errorMessage: action.payload.error
             };
+        }
+        case AuthActionTypes.LOGOUT: {
+            return {
+                ...state,
+                user: null
+            };
+        }
+        case AuthActionTypes.CLEAR_ERROR: {
+            return {
+                ...state,
+                errorMessage: null
+            }
         }
         default: {
             return state;

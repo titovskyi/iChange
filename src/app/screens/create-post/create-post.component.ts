@@ -1,14 +1,12 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Output} from '@angular/core';
 
 import * as imagePicker from 'nativescript-imagepicker';
 
-// import { Folder, FileSystemEntity, path } from 'tns-core-modules/file-system/file-system';
-import { ImageSource } from 'tns-core-modules/image-source';
-
 import { Page } from 'tns-core-modules/ui/page';
-import { knownFolders, path, Folder, FileSystemEntity } from 'tns-core-modules/file-system';
-import * as fs from 'tns-core-modules/file-system';
-import { RadListView } from 'nativescript-ui-listview';
+import { ObservableArray } from 'tns-core-modules/data/observable-array/observable-array';
+
+import { RadListView, LoadOnDemandListViewEventData } from 'nativescript-ui-listview';
+import { Router } from '@angular/router';
 
 const app = require('application');
 declare const android: any;
@@ -16,122 +14,124 @@ declare const android: any;
 @Component({
     selector: 'ns-create-post',
     templateUrl: './create-post.component.html',
-    styleUrls: ['./create-post.component.css']
+    styleUrls: ['./create-post.component.scss']
 })
-export class CreatePostComponent implements OnInit, AfterViewInit {
-    public folderEntities = [];
+export class CreatePostComponent implements AfterViewInit {
+    public folderEntities: { fileUri: string; text: string; date: string }[] = [];
 
-    public imageList: Array<any> = [];
+    public imageList: { fileUri: string; text: string; date: string }[] = [];
 
-    constructor(private page: Page) {
-        // let context = imagePicker.create({
-        //     mode: 'single'
-        // });
-        //
-        // context
-        //     .authorize()
-        //     .then((val) => {
-        //         let tempPicturePath = android.os.Environment.getExternalStoragePublicDirectory(
-        //             android.os.Environment.DIRECTORY_DCIM + '/Camera'
-        //         ).getAbsolutePath();
-        //         let MediaStore = android.provider.MediaStore;
-        //
-        //         console.log(MediaStore.Images.Media.INTERNAL_CONTENT_URI, 'MediaStore');
-        //         console.log(MediaStore.Images.Media.INTERNAL_CONTENT_URI, 'MediaStore');
-        //         console.log(MediaStore.Images, 'MediaStore');
-        //
-        //         // let temp = android.os.Environment.getExternalStoragePublicDirectory(
-        //         //     MediaStore.Images.Media.INTERNAL_CONTENT_URI
-        //         // ).getAbsolutePath();
-        //
-        //
-        //         // let tempFolder = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        //
-        //         // console.log(tempFolder);
-        //         // tempFolder.getEntities().then((entities) => {
-        //         //     console.log(entities);
-        //         // })
-        //         // console.log(temp, 'temptemptemptemptemptemptemp');
-        //         // console.log(tempFolder, 'tempFolder');
-        //         let folder: Folder = Folder.fromPath(tempPicturePath);
-        //
-        //         folder.getEntities().then((entities: FileSystemEntity[]) => {
-        //             console.log(entities.length);
-        //             entities.forEach((entity) => {
-        //                 this.folderEntities.push({
-        //                     name: entity.name,
-        //                     path: path.join(entity.path),
-        //                     modified: entity.lastModified.toString()
-        //                 });
-        //             });
-        //         });
-        //     })
-        //     .then(() => {
-        //         this.folderEntities.sort((a, b) => {
-        //             return <any>new Date(b.modified) - <any>new Date(a.modified);
-        //         });
-        //     });
-    }
+    public images: ObservableArray<any> = new ObservableArray<any>();
+
+    private listView: RadListView;
 
     // #############################################
 
-    ngOnInit(): void {}
+    public postImages: { fileUri: string; text: string; date: string }[] = [];
+
+    // #############################################
+
+    @Output() private showHomePage: EventEmitter<void> = new EventEmitter<void>();
+
+    // #############################################
 
     ngAfterViewInit(): void {
-        let context = imagePicker.create({
+        const context = imagePicker.create({
             mode: 'single'
         });
 
-        context.authorize().then((val) => {
-            this.getGalleryPhotos();
-        });
+        context
+            .authorize()
+            .then((val) => {
+                this.getGalleryPhotos();
+            })
+            .then(() => {
+                const newImages = this.imageList.splice(0, 12);
+                this.images.push(newImages);
+            });
     }
 
     // #############################################
 
-    public onTap() {}
+    public onLoadMoreItemsRequested(ev: LoadOnDemandListViewEventData): void {
+        this.listView = ev.object;
 
-    getGalleryPhotos() {
-        let MediaStore = android.provider.MediaStore;
-        console.log('getGalleryPhotos');
-        let photoList: Array<any> = [];
+        if (this.imageList.length > 0) {
+            setTimeout(() => {
+                const newImages = this.imageList.splice(0, 12);
+
+                this.images.push(newImages);
+                this.listView.notifyLoadOnDemandFinished();
+            }, 1500);
+        } else {
+            ev.returnValue = false;
+            this.listView.notifyLoadOnDemandFinished(true);
+        }
+    }
+
+    // #############################################
+
+    public goBack(): void {
+        console.log('here go back')
+        // this.listView.notifyLoadOnDemandFinished(true);
+        this.showHomePage.emit();
+    }
+
+    public goNext(): void {}
+
+    // #############################################
+
+    public addImageToPost(imageObject: { fileUri: string; text: string; date: string }): void {
+        if (this.postImages.find((image) => image.fileUri === imageObject.fileUri)) {
+            return;
+        }
+
+        if (this.postImages.length < 5) {
+            this.postImages.push(imageObject);
+        }
+    }
+
+    public removeImageFromPost(imageObj: { fileUri: string; text: string; date: string }): void {
+        this.postImages = this.postImages.filter((image) => image.fileUri !== imageObj.fileUri);
+    }
+
+    public checkIfChosen(imageObject): boolean {
+        return !!this.postImages.find((image) => image.fileUri === imageObject.fileUri);
+    }
+
+    // #############################################
+
+    private getGalleryPhotos(): void {
+        const MediaStore = android.provider.MediaStore;
         let cursor = null;
+
         try {
-            var context = app.android.context;
-            let columns = [MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DATE_ADDED];
-            let order_by = MediaStore.Images.Media.START;
-            let uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            const context = app.android.context;
+            const columns = [MediaStore.MediaColumns.DATA, MediaStore.MediaColumns.DATE_ADDED];
+            const uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
             cursor = context.getContentResolver().query(uri, columns, null, null, null);
 
             if (cursor && cursor.getCount() > 0) {
                 while (cursor.moveToNext()) {
-                    if (cursor.getColumnIndex(MediaStore.MediaColumns.DATA) > 5) {
-                        break;
-                    }
+                    const column_index = cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
+                    const date_index = cursor.getColumnIndex(MediaStore.MediaColumns.DATE_ADDED);
+                    const imageUri = cursor.getString(column_index) + '';
+                    const date = cursor.getString(date_index);
+                    const name = imageUri.substring(imageUri.lastIndexOf('.'));
+                    const image = { fileUri: imageUri, text: name, date: date };
 
-                    let column_index = cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
-                    let date_index = cursor.getColumnIndex(MediaStore.MediaColumns.DATE_ADDED)
-                    let imageUri = cursor.getString(column_index) + '';
-                    let date = cursor.getString(date_index);
-                    let name = imageUri.substring(imageUri.lastIndexOf('.'));
-                    // if(imageUri.indexOf('Camera') !== -1) {
-                        let image = { fileUri: imageUri, text: name, date: date };
-                        this.imageList.push(image);
-                    // }
+                    this.imageList.push(image);
                 }
                 this.imageList = this.imageList.sort((a, b) => {
-                    return b.date - a.date;
+                    return Number(b.date) - Number(a.date);
                 });
             }
-
-            var that = this;
-            setTimeout(function () {
-                let listview: RadListView = <RadListView>that.page.getViewById('listID');
-            }, 2000);
         } catch (error) {
             console.log(error);
             console.log('getGalleryPhotos=>', JSON.stringify(error));
         }
     }
+
+    // #############################################
 }

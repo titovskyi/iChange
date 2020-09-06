@@ -1,0 +1,11 @@
+<FlexboxLayout class="wrapper">
+    <Label class="error-text" [text]="errorTitle"></Label>
+    <FrescoDrawee
+        class="error-image"
+        [imageUri]="errorImageSrc"
+        failureImageUri="~/app/assets/fail-image.jpg"
+        verticalAlignment="center"
+    ></FrescoDrawee>
+    <Label class="error-text" [text]="errorText"></Label>
+    <Label class="error-button" text="Ясно" (tap)="onClose()"></Label>
+</FlexboxLayout>

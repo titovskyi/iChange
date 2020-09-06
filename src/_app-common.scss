@@ -35,6 +35,10 @@ The following CSS rule changes the font size of all Buttons that have the
   font-weight: 900;
 }
 
+.mdi {
+  font-family: "Material Icons", "MaterialIcons-Regular";
+}
+
 TextField:focus {
   border-bottom-color: red;
 }

@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Post } from './post.model';
 
+import { Config } from '../../assets/config';
+
 @Injectable({ providedIn: 'root' })
 export class PostFactory {
-    private static readonly SERVER_URL = 'http://192.168.0.102:3000/uploads/';
+    private static readonly SERVER_URL = `${Config.api}/uploads/`;
 
     // #############################################
 
@@ -16,13 +18,15 @@ export class PostFactory {
     // #############################################
 
     public create(postServerData): Post {
-        let fullPostPhotoPath: string;
+        let fullPostPhotoPath: string[] = [];
 
-        if (postServerData.photo.indexOf(PostFactory.SERVER_URL) !== -1) {
-            fullPostPhotoPath = postServerData.photo;
-        } else {
-            fullPostPhotoPath = PostFactory.SERVER_URL + postServerData.photo;
-        }
+        postServerData.photos.forEach((photo) => {
+            if (photo.indexOf(PostFactory.SERVER_URL) !== -1) {
+                fullPostPhotoPath.push(photo);
+            } else {
+                fullPostPhotoPath.push(PostFactory.SERVER_URL + photo);
+            }
+        });
 
         const postData = {
             id: postServerData.id,

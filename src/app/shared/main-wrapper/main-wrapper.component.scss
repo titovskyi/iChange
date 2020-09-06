@@ -1,11 +1,3 @@
-.tabselected {
-  color: #ff4b60;
-}
-
-.tabnotselected {
-  color: black;
-}
-
 .connection-badge {
   border-radius: 100%;
   color: #ffffff;
@@ -28,12 +20,23 @@
 }
 
 .bottom-nav {
-  background-color: #eeeeee;
+  background-color: #191331;
 }
 
 .nav-icon {
+  color: #ffffff;
+  font-size: 25;
   width: 60;
   height: 40;
   padding-left: 20;
   padding-top: 7;
+
+  &_active {
+    font-size: 45;
+    padding: -3 0 0 10;
+  }
+}
+
+ScrollView, StackLayout {
+  background: #342E50;
 }

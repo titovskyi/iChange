@@ -7,7 +7,7 @@ import { Page } from 'tns-core-modules/ui/page';
     styleUrls: ['./main-wrapper.component.scss']
 })
 export class MainWrapperComponent implements OnInit {
-    public isSelected: string = 'createPost';
+    public isSelected: string = 'home';
 
     // #############################################
 
@@ -24,6 +24,10 @@ export class MainWrapperComponent implements OnInit {
     public onBottomSheetTap(isSelected: string): void {
         this.isSelected = isSelected;
         this.cd.detectChanges();
+    }
+
+    public showHomePage(): void {
+        this.isSelected = 'home';
     }
 
     // #############################################
